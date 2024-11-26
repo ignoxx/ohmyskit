@@ -1,13 +1,13 @@
 module AABBCCDD
 
-go 1.22.4
+go 1.23.3
 
 // uncomment for local development on the superkit core.
-// replace github.com/anthdm/superkit => ../
+// replace github.com/ignoxx/ohmyskit => ../
 
 require (
 	github.com/a-h/templ v0.2.731
-	github.com/anthdm/superkit v0.0.0-20240622052611-30be5bb82e0d
+	github.com/ignoxx/ohmyskit v0.0.0-20240622052611-30be5bb82e0d
 	github.com/go-chi/chi/v5 v5.0.14
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0

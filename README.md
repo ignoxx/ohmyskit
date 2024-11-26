@@ -37,7 +37,7 @@ To create a new **SUPERKIT** project, you can run the following command:
 
 ```bash
 # Create your SUPERKIT project in a single command:
-go run github.com/anthdm/superkit@master [yourprojectname]
+go run github.com/ignoxx/ohmyskit@master [yourprojectname]
 
 # You can now navigate to your project:
 cd [myprojectname]
@@ -46,10 +46,10 @@ cd [myprojectname]
 npm install
 
 # If you run into dependency issues you can run:
-go clean -modcache && go get -u ./...  
+go clean -modcache && go get -u ./...
 
 # If you have the authentication plugin enabled you need to migrate your database.
-make db-up 
+make db-up
 ```
 
 ## Getting started
@@ -64,7 +64,7 @@ The **SUPERKIT** project structure is designed to be simple and easy to understa
 │     ├──  assets
 │     ├──  conf
 │     ├──  db
-│       ├── migrations 
+│       ├── migrations
 │     ├──  events
 │     ├──  handlers
 │     ├──  types
@@ -89,7 +89,7 @@ The **SUPERKIT** project structure is designed to be simple and easy to understa
 │   ├── package.json
 │   ├── tailwind.config.js
 ├── db
-├── event 
+├── event
 ├── kit
 │   ├── middleware
 ├── validate
@@ -169,7 +169,7 @@ views
 You can run the development server with the following command:
 
 ```bash
-make dev 
+make dev
 ```
 
 ## Hot reloading the browser

@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/anthdm/superkit/kit"
-	v "github.com/anthdm/superkit/validate"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	"github.com/ignoxx/ohmyskit/kit"
+	v "github.com/ignoxx/ohmyskit/validate"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )

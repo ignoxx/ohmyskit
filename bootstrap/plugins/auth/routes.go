@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/anthdm/superkit/kit"
 	"github.com/go-chi/chi/v5"
+	"github.com/ignoxx/ohmyskit/kit"
 )
 
 func InitializeRoutes(router chi.Router) {

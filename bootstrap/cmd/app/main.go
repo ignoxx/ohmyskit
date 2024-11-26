@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/anthdm/superkit/kit"
 	"github.com/go-chi/chi/v5"
+	"github.com/ignoxx/ohmyskit/kit"
 	"github.com/joho/godotenv"
 )
 

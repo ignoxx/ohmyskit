@@ -4,7 +4,7 @@ import (
 	"AABBCCDD/app/events"
 	"AABBCCDD/plugins/auth"
 
-	"github.com/anthdm/superkit/event"
+	"github.com/ignoxx/ohmyskit/event"
 )
 
 // Events are functions that are handled in separate goroutines.

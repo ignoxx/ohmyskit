@@ -1,10 +1,11 @@
-module github.com/anthdm/superkit
+module github.com/ignoxx/ohmyskit
 
-go 1.22.0
+go 1.23.3
 
 require (
-	github.com/a-h/templ v0.2.731
-	github.com/gorilla/sessions v1.3.0
+	github.com/a-h/templ v0.2.793
+	github.com/gorilla/sessions v1.4.0
+	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0
 )
 

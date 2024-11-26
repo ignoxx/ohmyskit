@@ -4,8 +4,8 @@ import (
 	"AABBCCDD/app/db"
 	"fmt"
 
-	"github.com/anthdm/superkit/kit"
-	v "github.com/anthdm/superkit/validate"
+	"github.com/ignoxx/ohmyskit/kit"
+	v "github.com/ignoxx/ohmyskit/validate"
 )
 
 var profileSchema = v.Schema{

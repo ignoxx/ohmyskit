@@ -6,9 +6,9 @@ import (
 	"AABBCCDD/plugins/auth"
 	"log/slog"
 
-	"github.com/anthdm/superkit/kit"
-	"github.com/anthdm/superkit/kit/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/ignoxx/ohmyskit/kit"
+	"github.com/ignoxx/ohmyskit/kit/middleware"
 
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 )
