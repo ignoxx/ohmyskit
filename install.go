@@ -49,7 +49,7 @@ func main() {
 	}
 
 	fmt.Println("-- renaming bootstrap ->", projectName)
-	if err := os.Rename(path.Join("superkit", bootstrapFolderName), projectName); err != nil {
+	if err := os.Rename(path.Join("ohmyskit", bootstrapFolderName), projectName); err != nil {
 		log.Fatal(err)
 	}
 
