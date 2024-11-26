@@ -2,6 +2,7 @@ package auth
 
 import (
 	"AABBCCDD/app/db"
+	"AABBCCDD/app/db/sqlc"
 	"fmt"
 
 	"github.com/ignoxx/ohmyskit/kit"
@@ -24,13 +25,13 @@ type ProfileFormValues struct {
 func HandleProfileShow(kit *kit.Kit) error {
 	auth := kit.Auth().(Auth)
 
-	var user User
-	if err := db.Get().First(&user, auth.UserID).Error; err != nil {
+	user, err := db.Get().FindUserByID(kit.Request.Context(), int64(auth.UserID))
+	if err != nil {
 		return err
 	}
 
 	formValues := ProfileFormValues{
-		ID:        user.ID,
+		ID:        uint(user.ID),
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Email:     user.Email,
@@ -50,12 +51,12 @@ func HandleProfileUpdate(kit *kit.Kit) error {
 	if auth.UserID != values.ID {
 		return fmt.Errorf("unauthorized request for profile %d", values.ID)
 	}
-	err := db.Get().Model(&User{}).
-		Where("id = ?", auth.UserID).
-		Updates(&User{
-			FirstName: values.FirstName,
-			LastName:  values.LastName,
-		}).Error
+	err := db.Get().UpdateUserFirstLastName(kit.Request.Context(), sqlc.UpdateUserFirstLastNameParams{
+		ID:        int64(auth.UserID),
+		FirstName: values.FirstName,
+		LastName:  values.LastName,
+	})
+
 	if err != nil {
 		return err
 	}

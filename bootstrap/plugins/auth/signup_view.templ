@@ -6,6 +6,7 @@ import (
 	"AABBCCDD/app/views/components"
 
 	"fmt"
+	"AABBCCDD/app/db/sqlc"
 )
 
 type SignupIndexPageData struct {
@@ -93,7 +94,7 @@ templ SignupForm(values SignupFormValues, errors v.Errors) {
 	</form>
 }
 
-templ ConfirmEmail(user User) {
+templ ConfirmEmail(user sqlc.User) {
 	<form hx-post="/resend-email-verification" class="flex flex-col gap-4 text-sm">
 		<input type="hidden" name="userID" value={ fmt.Sprint(user.ID) }/>
 		<div>An email confirmation link has been sent to: <span class="underline font-medium">{ user.Email }</span></div>

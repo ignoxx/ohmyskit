@@ -2,7 +2,7 @@ package auth
 
 import (
 	"AABBCCDD/app/db"
-	"database/sql"
+	"AABBCCDD/app/db/sqlc"
 	"net/http"
 	"os"
 	"strconv"
@@ -40,8 +40,7 @@ func HandleLoginCreate(kit *kit.Kit) error {
 		return kit.Render(LoginForm(values, errors))
 	}
 
-	var user User
-	err := db.Get().Find(&user, "email = ?", values.Email).Error
+	user, err := db.Get().FindUserByEmail(kit.Request.Context(), values.Email)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			errors.Add("credentials", "invalid credentials")
@@ -68,12 +67,13 @@ func HandleLoginCreate(kit *kit.Kit) error {
 	if err != nil {
 		sessionExpiry = 48
 	}
-	session := Session{
+
+	session, err := db.Get().CreateSession(kit.Request.Context(), sqlc.CreateSessionParams{
 		UserID:    user.ID,
 		Token:     uuid.New().String(),
 		ExpiresAt: time.Now().Add(time.Hour * time.Duration(sessionExpiry)),
-	}
-	if err = db.Get().Create(&session).Error; err != nil {
+	})
+	if err != nil {
 		return err
 	}
 
@@ -91,7 +91,7 @@ func HandleLoginDelete(kit *kit.Kit) error {
 		sess.Values = map[any]any{}
 		sess.Save(kit.Request, kit.Response)
 	}()
-	err := db.Get().Delete(&Session{}, "token = ?", sess.Values["sessionToken"]).Error
+	err := db.Get().DeleteSessionByToken(kit.Request.Context(), sess.Values["sessionToken"])
 	if err != nil {
 		return err
 	}
@@ -123,13 +123,12 @@ func HandleEmailVerify(kit *kit.Kit) error {
 		return kit.Render(EmailVerificationError("Email verification token expired"))
 	}
 
-	userID, err := strconv.Atoi(claims.Subject)
+	userID, err := strconv.ParseInt(claims.Subject, 10, 64)
 	if err != nil {
 		return kit.Render(EmailVerificationError("Email verification token expired"))
 	}
 
-	var user User
-	err = db.Get().First(&user, userID).Error
+	user, err := db.Get().FindUserByID(kit.Request.Context(), userID)
 	if err != nil {
 		return err
 	}
@@ -138,9 +137,7 @@ func HandleEmailVerify(kit *kit.Kit) error {
 		return kit.Render(EmailVerificationError("Email already verified"))
 	}
 
-	now := sql.NullTime{Time: time.Now(), Valid: true}
-	user.EmailVerifiedAt = now
-	err = db.Get().Save(&user).Error
+	err = db.Get().UpdateUserEmailVerifiedAt(kit.Request.Context(), userID)
 	if err != nil {
 		return err
 	}
@@ -156,17 +153,14 @@ func AuthenticateUser(kit *kit.Kit) (kit.Auth, error) {
 		return auth, nil
 	}
 
-	var session Session
-	err := db.Get().
-		Preload("User").
-		Find(&session, "token = ? AND expires_at > ?", token, time.Now()).Error
+	session, err := db.Get().FindSessionByTokenAndExpiration(kit.Request.Context(), token)
 	if err != nil || session.ID == 0 {
 		return auth, nil
 	}
 
 	return Auth{
 		LoggedIn: true,
-		UserID:   session.User.ID,
-		Email:    session.User.Email,
+		UserID:   uint(session.UserID),
+		Email:    session.UserEmail,
 	}, nil
 }

@@ -1,24 +1,28 @@
 package db
 
 import (
+	"AABBCCDD/app/db/sqlc"
+	"database/sql"
 	"log"
 	"os"
 
 	"github.com/ignoxx/ohmyskit/db"
 
 	_ "github.com/mattn/go-sqlite3"
-
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 )
 
 // By default this is a pre-configured Gorm DB instance.
 // Change this type based on the database package of your likings.
-var dbInstance *gorm.DB
+var dbInstance *sqlc.Queries
+var dbRawInstance *sql.DB
 
 // Get returns the instantiated DB instance.
-func Get() *gorm.DB {
+func Get() *sqlc.Queries {
 	return dbInstance
+}
+
+func GetRaw() *sql.DB {
+	return dbRawInstance
 }
 
 func init() {
@@ -31,7 +35,7 @@ func init() {
 		User:     os.Getenv("DB_USER"),
 		Host:     os.Getenv("DB_HOST"),
 	}
-	dbinst, err := db.NewSQL(config)
+	dbRawInstance, err := db.NewSQL(config)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,17 +48,11 @@ func init() {
 	// - uptrace bun -> https://bun.uptrace.dev
 	// - SQLC -> https://github.com/sqlc-dev/sqlc
 	// - gojet -> https://github.com/go-jet/jet
+
 	switch config.Driver {
 	case db.DriverSqlite3:
-		dbInstance, err = gorm.Open(sqlite.New(sqlite.Config{
-			Conn: dbinst,
-		}))
-	case db.DriverMysql:
-		// ...
+		dbInstance = sqlc.New(dbRawInstance)
 	default:
 		log.Fatal("invalid driver:", config.Driver)
-	}
-	if err != nil {
-		log.Fatal(err)
 	}
 }

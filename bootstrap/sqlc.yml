@@ -1,0 +1,12 @@
+version: "2"
+sql:
+  - schema:
+      - "app/db/migrations"
+    queries: "app/db/queries"
+    engine: "sqlite"
+    gen:
+      go:
+        out: "app/db/sqlc"
+
+
+
