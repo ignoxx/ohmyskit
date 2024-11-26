@@ -5,7 +5,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 MAIN_PATH = tmp/bin/main
-SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@latest \
+SYNC_ASSETS_COMMAND =	@go run github.com/air-verse/air@latest \
 			--build.cmd "templ generate --notify-proxy" \
 			--build.bin "true" \
 			--build.delay "100" \
@@ -29,7 +29,7 @@ sqlc:
 
 # run air to detect any go file changes to re-build and re-run the server.
 server:
-	@go run github.com/cosmtrek/air@latest \
+	@go run github.com/air-verse/air@latest \
 	--build.cmd "go build --tags dev -o ${MAIN_PATH} ./cmd/app/" --build.bin "${MAIN_PATH}" --build.delay "100" \
 	--build.exclude_dir "node_modules" \
 	--build.include_ext "go" \
