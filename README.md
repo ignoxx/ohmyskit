@@ -234,3 +234,15 @@ Make sure you also set the correct application environment variable in your `.en
 ```bash
 SUPERKIT_ENV = production
 ```
+
+# Local development
+create a `go.work` in `bootstrap/` with the following:
+```go
+go 1.23.3
+
+use ../
+```
+
+```sh
+go mod tidy
+```
