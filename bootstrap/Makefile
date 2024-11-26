@@ -5,7 +5,7 @@ ifneq (,$(wildcard ./.env))
 endif
 
 MAIN_PATH = tmp/bin/main
-SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@v1.51.0 \
+SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@latest \
 			--build.cmd "templ generate --notify-proxy" \
 			--build.bin "true" \
 			--build.delay "100" \
@@ -18,12 +18,18 @@ SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@v1.51.0 \
 # run templ generation in watch mode to detect all .templ files and
 # re-create _templ.txt files on change, then send reload event to browser.
 # Default url: http://localhost:7331
+watch-templ:
+	@go run github.com/a-h/templ/cmd/templ@latest generate --watch --proxy="http://localhost$(HTTP_LISTEN_ADDR)" --open-browser=false
+
 templ:
-	@templ generate --watch --proxy="http://localhost$(HTTP_LISTEN_ADDR)" --open-browser=false
+	@go run github.com/a-h/templ/cmd/templ@latest generate
+
+sqlc:
+	@go run github.com/sqlc-dev/sqlc/cmd/sqlc@latest generate
 
 # run air to detect any go file changes to re-build and re-run the server.
 server:
-	@go run github.com/cosmtrek/air@v1.51.0 \
+	@go run github.com/cosmtrek/air@latest \
 	--build.cmd "go build --tags dev -o ${MAIN_PATH} ./cmd/app/" --build.bin "${MAIN_PATH}" --build.delay "100" \
 	--build.exclude_dir "node_modules" \
 	--build.include_ext "go" \
@@ -46,15 +52,15 @@ sync_assets:
 
 # start the application in development
 dev:
-	@make -j5 templ server watch-assets watch-esbuild sync_assets
+	@make -j6 watch-templ server watch-assets watch-esbuild sync_assets sqlc
 
 # build the application for production. This will compile your app
 # to a single binary with all its assets embedded.
 build:
 	@npx tailwindcss -i app/assets/app.css -o ./public/assets/styles.css
 	@npx esbuild app/assets/index.js --bundle --outdir=public/assets
-	@go build -o bin/app_prod cmd/app/main.go
-	@echo "compiled you application with all its assets to a single binary => bin/app_prod"
+	@go build -ldflags="-s -w" -o bin/app_prod cmd/app/main.go
+	@echo "compiled your application with all its assets to a single binary => bin/app_prod"
 
 db-status:
 	@GOOSE_DRIVER=$(DB_DRIVER) GOOSE_DBSTRING=$(DB_NAME) go run github.com/pressly/goose/v3/cmd/goose@latest -dir=$(MIGRATION_DIR) status
