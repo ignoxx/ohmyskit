@@ -1,6 +1,11 @@
-# SUPERKIT
+# Oh My SUPERKIT
 
-Build high-performance apps swiftly with minimal team resources in Go programming language. **SUPERKIT** is a full-stack web framework that provides a set of tools and libraries to help you build web applications quickly and efficiently. **SUPERKIT** is built on top of the Go programming language and is designed to be simple and easy to use.
+Build high-performance apps _swiftly_ with minimal team resources in the Go programming language.
+
+**SUPERKIT** is..
+  - .. a full-stack web framework that provides a set of tools and libraries to help you build web applications quickly and efficiently.
+  - .. built on top of the Go programming language and is designed to be simple and easy to use.
+  - .. _opiniated_ by default but easily extensible
 
 > The project (for now) is in the **experimental** phase.
 
@@ -30,6 +35,7 @@ Build high-performance apps swiftly with minimal team resources in Go programmin
 - [Testing](#testing)
   - [Testing handlers](#testing-handlers)
 - [Create a production release](#create-a-production-release)
+- [Local superkit development](#local-superkit-development)
 
 ## Installation
 
@@ -235,7 +241,7 @@ Make sure you also set the correct application environment variable in your `.en
 SUPERKIT_ENV = production
 ```
 
-# Local development
+# Local superkit development
 create a `go.work` in `bootstrap/` with the following:
 ```go
 go 1.23.3
