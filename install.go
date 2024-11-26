@@ -42,8 +42,12 @@ func main() {
 		}
 	}
 
+	fmt.Println("-- cleanup")
+	clean := exec.Command("rm", "-rf", "ohmyskit")
+	clean.Run()
+
 	fmt.Println("-- cloning", reponame)
-	clone := exec.Command("git", "clone", reponame)
+	clone := exec.Command("git", "clone", "--depth=1", reponame)
 	if err := clone.Run(); err != nil {
 		log.Fatal(err)
 	}
