@@ -4,29 +4,19 @@ ifneq (,$(wildcard ./.env))
     export
 endif
 
-ifeq ($(OS),Windows_NT)
-	MAIN_PATH = /tmp/bin/main.exe
-	SYNC_ASSETS_COMMAND =	@go run github.com/makiuchi-d/arelo@v1.13.1 \
-	--target "./public" \
-	--pattern "**/*.js" \
-	--pattern "**/*.css" \
-	--delay "100ms" \
-	--templ generate --notify-proxy
-else
-	MAIN_PATH = tmp/bin/main
-	SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@v1.51.0 \
-	--build.cmd "templ generate --notify-proxy" \
-	--build.bin "true" \
-	--build.delay "100" \
-	--build.exclude_dir "" \
-	--build.include_dir "public" \
-	--build.include_ext "js,css" \
-	--screen.clear_on_rebuild true \
-	--log.main_only true
-endif
+MAIN_PATH = tmp/bin/main
+SYNC_ASSETS_COMMAND =	@go run github.com/cosmtrek/air@v1.51.0 \
+			--build.cmd "templ generate --notify-proxy" \
+			--build.bin "true" \
+			--build.delay "100" \
+			--build.exclude_dir "" \
+			--build.include_dir "public" \
+			--build.include_ext "js,css" \
+			--screen.clear_on_rebuild true \
+			--log.main_only true
 
-# run templ generation in watch mode to detect all .templ files and 
-# re-create _templ.txt files on change, then send reload event to browser. 
+# run templ generation in watch mode to detect all .templ files and
+# re-create _templ.txt files on change, then send reload event to browser.
 # Default url: http://localhost:7331
 templ:
 	@templ generate --watch --proxy="http://localhost$(HTTP_LISTEN_ADDR)" --open-browser=false
@@ -44,7 +34,7 @@ server:
 
 # run tailwindcss to generate the styles.css bundle in watch mode.
 watch-assets:
-	@npx tailwindcss -i app/assets/app.css -o ./public/assets/styles.css --watch   
+	@npx tailwindcss -i app/assets/app.css -o ./public/assets/styles.css --watch
 
 # run esbuild to generate the index.js bundle in watch mode.
 watch-esbuild:

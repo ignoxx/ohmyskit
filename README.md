@@ -176,8 +176,6 @@ make dev
 
 Hot reloading is configured by default when running your application in development.
 
-> NOTE: on windows or on in my case (WSL2) you might need to run `make watch-assets` in another terminal to watch for CSS and JS file changes.
-
 ## Migrations
 
 ### Create a new migration
