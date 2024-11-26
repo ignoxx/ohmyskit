@@ -5,3 +5,4 @@ node_modules
 tmp
 .env
 app_db
+go.work*
